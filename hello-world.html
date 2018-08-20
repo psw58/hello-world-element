@@ -1,0 +1,116 @@
+<!-- Defines element markup -->
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/95/three.js"></script>
+<template>
+    <p>Welcome <strong></strong></p>
+    <script>console.log("welcome to the shadow dom")</script>
+    <!DOCTYPE html>
+</template>
+
+<script>
+(function(window, document, undefined) {
+    //draw the cube
+    var camera, scene, renderer;
+    var mesh;
+    init();
+    animate();
+    function init() {
+        camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 1, 1000 );
+        camera.position.z = 400;
+        scene = new THREE.Scene();
+        var texture = new THREE.TextureLoader().load( 'textures/Cornell-Badge2.jpg' );
+        var geometry = new THREE.BoxBufferGeometry( 200, 200, 200 );
+        var material = new THREE.MeshBasicMaterial( { map: texture } );
+        mesh = new THREE.Mesh( geometry, material );
+        scene.add( mesh );
+        renderer = new THREE.WebGLRenderer( { antialias: true, alpha: true } );
+        renderer.setPixelRatio( window.devicePixelRatio );
+        renderer.setSize( window.innerWidth, window.innerHeight );
+        document.body.appendChild( renderer.domElement );
+        //
+        window.addEventListener( 'resize', onWindowResize, false );
+    }
+    function onWindowResize() {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize( window.innerWidth, window.innerHeight );
+    }
+    function animate() {
+        requestAnimationFrame( animate );
+        mesh.rotation.x += 0.003;
+        mesh.rotation.y += 0.01;
+        renderer.render( scene, camera );
+    }
+    //------------- end of cube --------------
+
+    //go to the shadow world
+
+    // Refers to the "importer", which is index.html
+    var thatDoc = document;
+
+    // Refers to the "importee", which is src/hello-world.html
+    var thisDoc =  (thatDoc._currentScript || thatDoc.currentScript).ownerDocument;
+
+    // Gets content from <template>
+    var template = thisDoc.querySelector('template').content;
+
+    // Creates an object based in the HTML Element prototype
+    var MyElementProto = Object.create(HTMLElement.prototype);
+
+    // Creates the "who" attribute and sets a default value
+    MyElementProto.who = 'to the shadow-dom';
+
+    // Fires when an instance of the element is created
+    MyElementProto.createdCallback = function() {
+        // Creates the shadow root
+        var shadowRoot = this.createShadowRoot();
+
+        // Adds a template clone into shadow root
+        var clone = thatDoc.importNode(template, true);
+        shadowRoot.appendChild(clone);
+
+        // Caches <strong> DOM query
+        this.strong = shadowRoot.querySelector('strong');
+
+        // Checks if the "who" attribute has been overwritten
+        if (this.hasAttribute('who')) {
+            var who = this.getAttribute('who');
+            this.setWho(who);
+        }
+        else {
+            this.setWho(this.who);
+        }
+    };
+
+    // Fires when an attribute was added, removed, or updated
+    MyElementProto.attributeChangedCallback = function(attr, oldVal, newVal) {
+        if (attr === 'who') {
+            this.setWho(newVal);
+        }
+    };
+
+    // Sets new value to "who" attribute
+    MyElementProto.setWho = function(val) {
+        this.who = val;
+
+        // Sets "who" value into <strong>
+        this.strong.textContent = this.who;
+    };
+
+    // Registers <hello-world> in the main document
+    window.MyElement = thatDoc.registerElement('hello-world', {
+        prototype: MyElementProto
+    });
+
+
+
+
+
+
+
+
+
+
+})(window, document);
+</script>
