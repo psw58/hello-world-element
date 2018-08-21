@@ -1,16 +1,18 @@
 <!-- Defines element markup -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/95/three.js"></script>
+
 <template>
-    
-    <p><strong></strong></p>
-    <script id='cube' ></script>
-    <script  >console.log("welcome to the shadow dom")
-    
-        //draw the cube
-        var camera, scene, renderer;
+    <p>Welcome <strong></strong></p>
+    <div id='cube'></div>
+    <script>console.log("welcome to the shadow dom")
+    //draw the cube
+    var camera, scene, renderer;
     var mesh;
-    init();
-    animate();
+    window.onload = function () {
+        init();
+        animate();
+    }
+    //init();
+    //animate();
     function init() {
         camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 1, 1000 );
         camera.position.z = 400;
@@ -23,11 +25,21 @@
         renderer = new THREE.WebGLRenderer( { antialias: true, alpha: true } );
         renderer.setPixelRatio( window.devicePixelRatio );
         renderer.setSize( window.innerWidth, window.innerHeight );
+        //var scripts= document.getElementsByTagName('script');
+        //var script= scripts[scripts.length-1];
+        script = document.getElementById('cube');
         document.write("<div id='cube'></div>");
-        var cube = document.getElementById('cube');
-        cube.appendChild( renderer.domElement );
-        window.addEventListener( 'resize', onWindowResize, false );
+        script = document.getElementById('cube');
+        //cube.appendChild( renderer.domElement );
+        //var newcontent = document.createElement('div'); 
 
+        if (script){
+            script.appendChild(renderer.domElement);
+        }
+        //script.parentNode.insertBefore(renderer.domElement, script);
+        //document.body.appendChild( renderer.domElement );
+        //
+        window.addEventListener( 'resize', onWindowResize, false );
     }
     function onWindowResize() {
         camera.aspect = window.innerWidth / window.innerHeight;
@@ -40,14 +52,15 @@
         mesh.rotation.y += 0.01;
         renderer.render( scene, camera );
     }
-    //------------- end of cube --------------
-
+    //------------- end of cube --------------    
     </script>
     <!DOCTYPE html>
 </template>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/95/three.js"></script>
 <script>
 (function(window, document, undefined) {
+
 
     //go to the shadow world
 
