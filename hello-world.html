@@ -4,12 +4,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/95/three.js"></script>
 <template>
     <p>Welcome <strong></strong></p>
-    <script>console.log("welcome to the shadow dom")</script>
-    <!DOCTYPE html>
-</template>
-
-<script>
-(function(window, document, undefined) {
+    <script>console.log("welcome to the shadow dom")
     //draw the cube
     var camera, scene, renderer;
     var mesh;
@@ -27,8 +22,8 @@
         renderer = new THREE.WebGLRenderer( { antialias: true, alpha: true } );
         renderer.setPixelRatio( window.devicePixelRatio );
         renderer.setSize( window.innerWidth, window.innerHeight );
-        var x = document.getElementsByClassName('container-fluid');
-        x[0].appendChild( renderer.domElement );
+        var x = document.getElementsByID('cube');
+        x.appendChild( renderer.domElement );
         //document.body.appendChild( renderer.domElement );
         //
         window.addEventListener( 'resize', onWindowResize, false );
@@ -44,7 +39,17 @@
         mesh.rotation.y += 0.01;
         renderer.render( scene, camera );
     }
-    //------------- end of cube --------------
+    //------------- end of cube --------------    
+    
+    
+    
+    </script>
+    <!DOCTYPE html>
+</template>
+
+<script>
+(function(window, document, undefined) {
+
 
     //go to the shadow world
 
